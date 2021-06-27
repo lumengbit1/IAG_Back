@@ -28,7 +28,7 @@ router.get('/hint', function (req, res, next) {
 
 router.post('/guess', function (req, res, next) {
   const { body } = req;
-  console.log(returnValue)
+
   if (_.join(hint, '') !== body.hint) {
     res.status(404).send(JSON.stringify({ error: 'hint not match' }));
   } else {
