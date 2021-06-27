@@ -9,9 +9,9 @@ let result = {
   hint: '',
   answer: '',
 };
-const random = randomNum();
+let random = randomNum();
 
-const hint = hintGenerator(random);
+let hint = hintGenerator(random);
 
 let returnValue = new Array;
 
@@ -35,6 +35,14 @@ router.post('/guess', function (req, res, next) {
     returnValue.push(numGuess(body, random))
     res.send(JSON.stringify(returnValue));
   }
+})
+
+router.get('/reset', function (req, res, next) {
+  random = randomNum();
+  hint = hintGenerator(random);
+  returnValue = new Array;
+  console.log(hint)
+  res.send(JSON.stringify({ reset: 'ok' }));
 })
 
 export default router;
