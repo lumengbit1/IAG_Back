@@ -44,4 +44,4 @@ router.get('/reset', function (req, res, next) {
   res.send(JSON.stringify({ reset: 'ok' }));
 })
 
-export default router;
+module.exports = router
