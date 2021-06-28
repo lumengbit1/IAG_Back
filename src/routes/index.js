@@ -3,15 +3,17 @@ import { numGuess, randomNum, hintGenerator } from '../modules/guess';
 import _ from 'lodash';
 
 let router = express.Router();
-let result = {
-  correct: false,
-  highlight: [],
-  hint: '',
-  answer: '',
-};
+
 let random = randomNum();
 
 let hint = hintGenerator(random);
+
+let result = {
+  correct: false,
+  highlight: [],
+  hint: hint,
+  answer: '',
+};
 
 let returnValue = new Array;
 
@@ -21,8 +23,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/hint', function (req, res, next) {
-  result.hint = hint;
-
   res.send(JSON.stringify(result));
 })
 
@@ -40,6 +40,7 @@ router.post('/guess', function (req, res, next) {
 router.get('/reset', function (req, res, next) {
   random = randomNum();
   hint = hintGenerator(random);
+  result.hint = hint;
   returnValue = new Array;
   res.send(JSON.stringify({ reset: 'ok' }));
 })

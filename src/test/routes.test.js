@@ -9,6 +9,10 @@ import { numGuess, randomNum, hintGenerator } from '../modules/guess';
 const app = express();
 app.use("/hint", serverRoutes);
 
+afterEach(() => {
+  nock.cleanAll();
+});
+
 describe("testing-server-routes", () => {
   let random = randomNum();
 
@@ -30,15 +34,23 @@ describe("testing-server-routes", () => {
     expect(body).toEqual(hint);
   });
 
-  // it("POST /guess - success", async () => {
-  //   nock("http://api.postcodes.io&quot")
-  //     .persist()
-  //     .post('/guess', { username: 'pgte', password: /.+/i })
-  //     .reply(200, { id: '123ABC' })
+  it("GET /reset - success", async () => {
+    nock("http://api.postcodes.io&quot")
+      .get('/reset')
+      .reply(200, result.hint = hint);
 
-  //   const { body } = await request.post("/guess");
-  //   expect(body).toEqual(hint);
-  // });
+    const { body } = await request.get("/reset");
+    expect(body).toEqual(hint);
+  });
+
+  it("POST /guess - failed", async () => {
+    nock("http://localhost:8000")
+      .post('/guess', { username: 'pgte', password: /.+/i })
+      .reply(200, { id: '123ABC' })
+
+    const { body } = await request.post("/guess", { username: 'pgte', password: /.+/i });
+    expect(body).toEqual({ status: 404, "error": "Resource not found" });
+  });
 
   it("numGuess - correct", async () => {
     const result = numGuess({
