@@ -41,7 +41,6 @@ router.get('/reset', function (req, res, next) {
   random = randomNum();
   hint = hintGenerator(random);
   returnValue = new Array;
-  console.log(hint)
   res.send(JSON.stringify({ reset: 'ok' }));
 })
 
